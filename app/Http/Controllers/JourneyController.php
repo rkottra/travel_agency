@@ -3,64 +3,58 @@
 namespace App\Http\Controllers;
 
 use App\Models\journey;
+use App\Models\vehicle;
 use App\Http\Requests\StorejourneyRequest;
 use App\Http\Requests\UpdatejourneyRequest;
+use Illuminate\Http\Request;
+
 
 class JourneyController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function elso_feladat(vehicle $vehicle)
     {
-        //
+        return journey::with("vehicle")->
+                    where("vehicle", "=", $vehicle->id)->get();
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+
+    public function masodik_feladat(Request $request)
     {
-        //
+        try {
+            $seged = new journey();
+            if (empty($request->vehicle)) return response()->json("Hiányos adatok", 400);
+            if (empty($request->country)) return response()->json("Hiányos adatok", 400);
+            if (empty($request->description)) return response()->json("Hiányos adatok", 400);
+            if (empty($request->departure)) return response()->json("Hiányos adatok", 400);
+            if (empty($request->capacity)) return response()->json("Hiányos adatok", 400);
+            if (empty($request->pictureUrl)) return response()->json("Hiányos adatok", 400);
+            
+            $seged->vehicle = $request->vehicle;
+            $seged->country = $request->country;
+            $seged->description = $request->description;
+            $seged->departure = $request->departure;
+            $seged->capacity = $request->capacity;
+            $seged->pictureUrl = $request->pictureUrl;
+            $seged->save();
+            return response()->json([
+                "id" => $seged->id,
+            ], 201);
+        } catch(Exception $e) {
+            return response()->json("Hiányos adatok", 400);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StorejourneyRequest $request)
+
+    public function harmadik_feladat(journey $journey)
     {
-        //
+        try {
+            $journey->delete();
+            return response()->json("", 204);
+        } catch(Exception $e) {
+            return response()->json("Az ajánlat nem létezik.", 404);
+        }
+        
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(journey $journey)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(journey $journey)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatejourneyRequest $request, journey $journey)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(journey $journey)
-    {
-        //
-    }
 }

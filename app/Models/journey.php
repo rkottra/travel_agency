@@ -12,6 +12,6 @@ class journey extends Model
     public $timestamps = false;
 
     public function vehicle():BelongsTo {
-        return $this->belongsTo("vehicles", "vehicle", "id");
+        return $this->belongsTo(vehicle::class, "vehicle", "id");
     }
 }

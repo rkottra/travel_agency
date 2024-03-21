@@ -16,6 +16,7 @@ class JourneySeeder extends Seeder
         $v = new vehicle();
         $v->type = "repülőgép";
         $v->save();
+        
         $v = new vehicle();
         $v->type = "busz";
         $v->save();

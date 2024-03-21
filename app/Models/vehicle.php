@@ -13,6 +13,6 @@ class vehicle extends Model
     public $timestamps = false;
 
     public function journeys():HasMany {
-        return $this->hasMany("journeys", "vehicle", "id");
+        return $this->hasMany(journey::class, "vehicle", "id");
     }
 }

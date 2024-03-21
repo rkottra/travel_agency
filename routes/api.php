@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+use App\Http\Controllers\JourneyController;
+Route::get("/journeys/{vehicle}", [JourneyController::class, 'elso_feladat'])->missing(function() {
+    return response()->json("A megadott járművel nem érhető el utazási ajánlat.", 404);
+});
+
+Route::post("/journey", [JourneyController::class, 'masodik_feladat']);
+
+
+Route::delete("/journey/{journey}", [JourneyController::class, 'harmadik_feladat'])->missing(function() {
+    return response()->json("Az ajánlat nem létezik.", 404);
 });
